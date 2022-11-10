@@ -1,18 +1,36 @@
 from pydantic import BaseModel
-from datetime import date
-
-
-class PersonsConfig(BaseModel):
-    theme: str
-    level: int
 
 
 class Persons(BaseModel):
-    name: str
-    family: str
-    avatar: str
-    birthdate: date
-    phone: int
-    email: str
+    name: str = None
+    family: str = None
+    avatar: str = None
+    birthdate: int = None
+    phone: str = None
+    email: str = None
+    login: str = None
+    password: str = None
+    theme: str = None
+    token: str = None
+
+
+class GreatPerson(Persons):
+    login: str
     password: str
-    config: PersonsConfig
+    token_date: int = None
+
+
+class GetPersons(BaseModel):
+    token: str
+    field_key: str
+    field_value: str
+
+
+class UpdateToken(BaseModel):
+    login: str
+    password: str
+
+
+class GetData(BaseModel):
+    token: str
+    id: str
