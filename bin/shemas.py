@@ -4,12 +4,12 @@ from pydantic import BaseModel
 class Persons(BaseModel):
     name: str = None
     family: str = None
-    avatar: str = None
-    birthdate: int = None
-    phone: str = None
-    email: str = None
     login: str = None
     password: str = None
+    avatar: str = None
+    phone: str = None
+    email: str = None
+    telegram: str = None
     theme: str = None
     token: str = None
 
@@ -17,7 +17,6 @@ class Persons(BaseModel):
 class GreatPerson(Persons):
     login: str
     password: str
-    token_date: int = None
 
 
 class GetPersons(BaseModel):
@@ -31,6 +30,12 @@ class UpdateToken(BaseModel):
     password: str
 
 
-class GetData(BaseModel):
+class GetDataSets(BaseModel):
     token: str
-    id: str
+    collection: str
+
+
+class PutDataSets(BaseModel):
+    token: str
+    collection: str
+    data: dict = {}
