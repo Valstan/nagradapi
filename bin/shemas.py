@@ -32,6 +32,7 @@ class UpdateToken(BaseModel):
 
 class GetDataSets(BaseModel):
     token: str
+    collection: str
 
 
 class PutDataSets(BaseModel):
