@@ -13,7 +13,7 @@ app = FastAPI()
 
 
 # Не зашифрованы в базе лишь день рождения и case и currency
-@app.get('/nagrada/get_persons')
+@app.post('/nagrada/get_persons')
 def get_persons(item: GetPersons):
     collection = base['persons']
     table = collection.find_one({'token': hashlib.sha256(item.token.encode()).hexdigest()},
@@ -89,7 +89,7 @@ def great_person(item: GreatPerson):
     return token
 
 
-@app.get('/nagrada/get_data_sets')
+@app.post('/nagrada/get_data_sets')
 def get_data_sets(item: GetDataSets):
     token = hashlib.sha256(item.token.encode()).hexdigest()
     collection = base['persons']
