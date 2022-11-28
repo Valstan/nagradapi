@@ -24,9 +24,9 @@ def get_persons(item: GetPersons):
         persons_list = collection.find({item.field_key: hashlib.sha256(item.field_value.encode()).hexdigest()})
         persons_list = [Persons(**r) for r in persons_list]
         if persons_list:
-            return persons_list
-        return "nothing found"
-    return "wrong token"
+            return {"out": persons_list}
+        return {"out": "nothing found"}
+    return {"out": "wrong token"}
 
 
 @app.post('/nagrada/update_person')
@@ -40,8 +40,8 @@ def update_person(item: Persons):
         collection.update_one({'_id': table['_id']},
                               {'$set': dic},
                               upsert=True)
-        return "ok"
-    return "wrong token"
+        return {"out": "ok"}
+    return {"out": "wrong token"}
 
 
 @app.post('/nagrada/update_token')
@@ -57,8 +57,8 @@ def update_token(item: UpdateToken):
                               {'$set': {'token': hashlib.sha256(token.encode()).hexdigest(),
                                         'token_date': int(time.time())}},
                               upsert=True)
-        return token
-    return "no login or bad password"
+        return {"out": token}
+    return {"out": "no login or bad password"}
 
 
 @app.post('/nagrada/great_person')
@@ -68,7 +68,7 @@ def great_person(item: GreatPerson):
     table = collection.find_one({'login': hashlib.sha256(item['login'].encode()).hexdigest()}, {"id": 1})
 
     if table:
-        return "login is busy"
+        return {"out": "login is busy"}
 
     token = str(uuid7())
     item = {k: hashlib.sha256(v.encode()).hexdigest() for k, v in item.items()}
@@ -86,7 +86,7 @@ def great_person(item: GreatPerson):
     collection.update_one(table,
                           {'$set': collection.find_one({'id': 'sets'}, {'_id': 0, 'id': 0})},
                           upsert=True)
-    return token
+    return {"out": token}
 
 
 @app.post('/nagrada/get_data_sets')
@@ -97,8 +97,8 @@ def get_data_sets(item: GetDataSets):
     if table and token_lifetime(table['token_date']):
         collection = base[item.collection]
         table = collection.find_one({'_id': table['_id']}, {'_id': 0})
-        return table
-    return "wrong token"
+        return {"out": table}
+    return {"out": "wrong token"}
 
 
 @app.post('/nagrada/put_data_sets')
@@ -112,5 +112,5 @@ def put_data_sets(item: PutDataSets):
         collection.update_one({'_id': table['_id']},
                               {'$set': item['data']},
                               upsert=True)
-        return "ok"
-    return "wrong token"
+        return {"out": "ok"}
+    return {"out": "wrong token"}
