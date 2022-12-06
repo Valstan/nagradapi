@@ -80,7 +80,7 @@ def great_person(item: GreatPerson):
     table = collection.find_one({'token': item['token']}, {"_id": 1})
     collection = base['data']
     collection.update_one(table,
-                          {'$set': {2023: {1: {1: []}}}},
+                          {'$set': collection.find_one({'id': 'data'}, {'_id': 0, 'id': 0})},
                           upsert=True)
     collection = base['sets']
     collection.update_one(table,
